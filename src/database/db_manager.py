@@ -229,3 +229,143 @@ class DatabaseManager:
             for event in events:
                 session.expunge(event)
             return events
+
+    def get_unnotified_blog_posts(self) -> List['BlogPost']:
+        """Get all blog posts that haven't been notified yet
+
+        Returns:
+            List[BlogPost]: List of unnotified blog posts
+        """
+        from .models import BlogPost
+        with self.get_session() as session:
+            posts = session.query(BlogPost).filter_by(notified=False).all()
+            for post in posts:
+                session.expunge(post)
+            return posts
+
+    def mark_blog_post_notified(self, post_id: int):
+        """Mark a blog post as notified
+
+        Args:
+            post_id: Blog post ID
+        """
+        from .models import BlogPost
+        with self.get_session() as session:
+            post = session.query(BlogPost).filter_by(id=post_id).first()
+            if post:
+                post.notified = True
+                session.commit()
+
+    def get_unnotified_reports(self) -> List['InvestorReport']:
+        """Get all reports that haven't been notified yet
+
+        Returns:
+            List[InvestorReport]: List of unnotified reports
+        """
+        from .models import InvestorReport
+        with self.get_session() as session:
+            reports = session.query(InvestorReport).filter_by(notified=False).all()
+            for report in reports:
+                session.expunge(report)
+            return reports
+
+    def mark_report_notified(self, report_id: int):
+        """Mark a report as notified
+
+        Args:
+            report_id: Report ID
+        """
+        from .models import InvestorReport
+        with self.get_session() as session:
+            report = session.query(InvestorReport).filter_by(id=report_id).first()
+            if report:
+                report.notified = True
+                session.commit()
+
+    def get_unnotified_videos(self) -> List['VideoContent']:
+        """Get all videos that haven't been notified yet
+
+        Returns:
+            List[VideoContent]: List of unnotified videos
+        """
+        from .models import VideoContent
+        with self.get_session() as session:
+            videos = session.query(VideoContent).filter_by(notified=False).all()
+            for video in videos:
+                session.expunge(video)
+            return videos
+
+    def mark_video_notified(self, video_id: int):
+        """Mark a video as notified
+
+        Args:
+            video_id: Video ID
+        """
+        from .models import VideoContent
+        with self.get_session() as session:
+            video = session.query(VideoContent).filter_by(id=video_id).first()
+            if video:
+                video.notified = True
+                session.commit()
+
+    def search_content(self, query: str, content_types: List[str] = None) -> dict:
+        """Search across all content types
+
+        Args:
+            query: Search query
+            content_types: List of types to search ('events', 'jobs', 'blogs', 'reports', 'videos')
+
+        Returns:
+            dict: Search results by type
+        """
+        from .models import Event, JobPosting, BlogPost, InvestorReport, VideoContent
+
+        if content_types is None:
+            content_types = ['events', 'jobs', 'blogs', 'reports', 'videos']
+
+        results = {}
+
+        with self.get_session() as session:
+            query_lower = f"%{query.lower()}%"
+
+            if 'events' in content_types:
+                events = session.query(Event).filter(
+                    (Event.title.ilike(query_lower)) | (Event.description.ilike(query_lower))
+                ).all()
+                for event in events:
+                    session.expunge(event)
+                results['events'] = events
+
+            if 'jobs' in content_types:
+                jobs = session.query(JobPosting).filter(
+                    (JobPosting.title.ilike(query_lower)) | (JobPosting.description.ilike(query_lower))
+                ).all()
+                for job in jobs:
+                    session.expunge(job)
+                results['jobs'] = jobs
+
+            if 'blogs' in content_types:
+                blogs = session.query(BlogPost).filter(
+                    (BlogPost.title.ilike(query_lower)) | (BlogPost.summary.ilike(query_lower))
+                ).all()
+                for blog in blogs:
+                    session.expunge(blog)
+                results['blogs'] = blogs
+
+            if 'reports' in content_types:
+                reports = session.query(InvestorReport).filter(
+                    (InvestorReport.title.ilike(query_lower)) | (InvestorReport.summary.ilike(query_lower))
+                ).all()
+                for report in reports:
+                    session.expunge(report)
+                results['reports'] = reports
+
+            if 'videos' in content_types:
+                videos = session.query(VideoContent).filter(
+                    (VideoContent.title.ilike(query_lower)) | (VideoContent.summary.ilike(query_lower))
+                ).all()
+                for video in videos:
+                    session.expunge(video)
+                results['videos'] = videos
+
+        return results

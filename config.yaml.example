@@ -15,6 +15,16 @@ job_monitoring:
   scrape_known_firms: true  # Scrape predefined list of quant firms
   scrape_event_firms: true  # Scrape firms that have hosted events
 
+# Content monitoring settings (blogs, reports, videos)
+content_monitoring:
+  scrape_blogs: true  # Scrape engineering blogs and technical content
+  scrape_reports: true  # Scrape investor reports and fund offerings
+  scrape_videos: true  # Scrape videos and generate transcripts
+
+# Storage settings
+storage:
+  base_dir: content_storage  # Base directory for storing downloaded content
+
 # Email notification settings
 email:
   enabled: false  # Set to true to enable email notifications

@@ -121,3 +121,51 @@ FIRM_CAREERS_URLS = {
     "Millennium": "https://www.mlp.com/careers/",
     "Point72": "https://careers.point72.com/",
 }
+
+# Engineering blogs and tech content
+FIRM_BLOG_URLS = {
+    "Citadel": "https://www.citadel.com/news/",
+    "Two Sigma": "https://www.twosigma.com/articles/",
+    "Jane Street": "https://blog.janestreet.com/",
+    "Jump Trading": "https://www.jumptrading.com/insights/",
+    "DE Shaw": "https://www.deshaw.com/insights",
+    "Hudson River Trading": "https://www.hudsonrivertrading.com/hrtbeat/",
+    "Optiver": "https://optiver.com/insights/",
+    "IMC Trading": "https://www.imc.com/us/insights/",
+    "Akuna Capital": "https://akunacapital.com/news-and-insights",
+    "DRW": "https://drw.com/insights/",
+    "Susquehanna International Group": "https://sig.com/news-insights/",
+    "Tower Research": "https://www.tower-research.com/insights/",
+    "AQR Capital": "https://www.aqr.com/Insights",
+    "Millennium": "https://www.mlp.com/insights/",
+    "Point72": "https://www.point72.com/insights/",
+    "Goldman Sachs": "https://www.goldmansachs.com/insights/",
+    "Morgan Stanley": "https://www.morganstanley.com/ideas/",
+    "JP Morgan": "https://www.jpmorgan.com/insights",
+}
+
+# Investor relations and reports
+FIRM_INVESTOR_URLS = {
+    "Citadel": "https://www.citadel.com/investment-strategies/",
+    "Two Sigma": "https://www.twosigma.com/funds/",
+    "AQR Capital": "https://www.aqr.com/library",
+    "Millennium": "https://www.mlp.com/about/",
+    "Point72": "https://www.point72.com/",
+    "Bridgewater Associates": "https://www.bridgewater.com/research-and-insights/",
+    "Goldman Sachs": "https://www.goldmansachs.com/investor-relations/",
+    "Morgan Stanley": "https://www.morganstanley.com/about-us-ir",
+    "JP Morgan": "https://www.jpmorganchase.com/ir/investor-relations",
+    "BlackRock": "https://ir.blackrock.com/",
+}
+
+# YouTube channels and video content
+FIRM_YOUTUBE_CHANNELS = {
+    "Citadel": "UCR6pJLJj5PJqQvXYhLpKEHQ",  # Citadel
+    "Two Sigma": "UCjOhwAU8VNpxCpJqKyf8sYA",  # Two Sigma
+    "Jane Street": "UCDsK_KHQ-xRqRfMd1xvEXkg",  # Jane Street
+    "AQR Capital": "UCyPXdMWkJqFvqJfvqFmRRRg",  # AQR Capital Management
+    "Goldman Sachs": "UCRJzYKfa-8L6pKqVq4DqbpQ",  # Goldman Sachs
+    "Morgan Stanley": "UCzjNRcGmWqf0xDDJEJDnRjg",  # Morgan Stanley
+    "JP Morgan": "UCe3v8hXGwVd1eMDmvFr2G7w",  # JPMorgan Chase & Co.
+    "BlackRock": "UCp_SdNPEZmBEcrwEh1W2OXg",  # BlackRock
+}

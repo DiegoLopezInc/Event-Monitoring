@@ -11,7 +11,11 @@ from apscheduler.triggers.cron import CronTrigger
 from ..database.db_manager import DatabaseManager
 from ..scrapers.event_scraper import EventScraper
 from ..scrapers.job_scraper import JobScraper
+from ..scrapers.blog_scraper import BlogScraper
+from ..scrapers.report_scraper import ReportScraper
+from ..scrapers.video_scraper import VideoScraper
 from ..notifications.notifier import Notifier
+from ..storage import ContentStorage
 from ..firms.firms_list import CAMPUS_EVENT_SOURCES, FIRM_CAREERS_URLS
 
 logger = logging.getLogger(__name__)
@@ -28,8 +32,12 @@ class MonitoringJob:
         """
         self.config = config
         self.db = DatabaseManager(config.get('database', {}).get('url', 'sqlite:///event_monitoring.db'))
+        self.storage = ContentStorage(config.get('storage', {}).get('base_dir', 'content_storage'))
         self.event_scraper = EventScraper(self.db)
         self.job_scraper = JobScraper(self.db)
+        self.blog_scraper = BlogScraper(self.db, self.storage)
+        self.report_scraper = ReportScraper(self.db, self.storage)
+        self.video_scraper = VideoScraper(self.db, self.storage)
         self.notifier = Notifier(self.db, config)
 
     def run(self):
@@ -43,12 +51,21 @@ class MonitoringJob:
             # Scrape jobs from firm portals
             total_jobs = self._scrape_jobs()
 
+            # Scrape blog posts from firm blogs
+            total_blogs = self._scrape_blogs()
+
+            # Scrape investor reports
+            total_reports = self._scrape_reports()
+
+            # Scrape videos and transcripts
+            total_videos = self._scrape_videos()
+
             # Send notifications for new items
             notification_summary = self.notifier.notify_new_items()
 
             logger.info(
-                f"Job completed: {total_events} events found, "
-                f"{total_jobs} jobs found, "
+                f"Job completed: {total_events} events, {total_jobs} jobs, "
+                f"{total_blogs} blog posts, {total_reports} reports, {total_videos} videos found. "
                 f"{notification_summary['total_notifications']} notifications sent"
             )
 
@@ -110,6 +127,48 @@ class MonitoringJob:
         # Scrape jobs from firms that have hosted events
         if self.config.get('job_monitoring', {}).get('scrape_event_firms', True):
             total += self.job_scraper.scrape_firms_with_events()
+
+        return total
+
+    def _scrape_blogs(self) -> int:
+        """Scrape blog posts from all configured sources
+
+        Returns:
+            int: Total blog posts found
+        """
+        total = 0
+
+        # Scrape blogs if enabled in config
+        if self.config.get('content_monitoring', {}).get('scrape_blogs', True):
+            total += self.blog_scraper.scrape_all_firm_blogs()
+
+        return total
+
+    def _scrape_reports(self) -> int:
+        """Scrape investor reports from all configured sources
+
+        Returns:
+            int: Total reports found
+        """
+        total = 0
+
+        # Scrape reports if enabled in config
+        if self.config.get('content_monitoring', {}).get('scrape_reports', True):
+            total += self.report_scraper.scrape_all_firm_reports()
+
+        return total
+
+    def _scrape_videos(self) -> int:
+        """Scrape videos and transcripts from all configured sources
+
+        Returns:
+            int: Total videos found
+        """
+        total = 0
+
+        # Scrape videos if enabled in config
+        if self.config.get('content_monitoring', {}).get('scrape_videos', True):
+            total += self.video_scraper.scrape_all_firm_channels()
 
         return total
 

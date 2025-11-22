@@ -49,6 +49,18 @@ def main():
         help='Time to run daily job in HH:MM format (default: 20:00)'
     )
 
+    parser.add_argument(
+        '--search',
+        type=str,
+        help='Search for content across all types (events, jobs, blogs, reports, videos)'
+    )
+
+    parser.add_argument(
+        '--storage-stats',
+        action='store_true',
+        help='Show storage statistics'
+    )
+
     args = parser.parse_args()
 
     # Create example config if requested
@@ -74,6 +86,56 @@ def main():
         notifier = Notifier(db, config)
         notifier.send_test_notification()
         print("Test notification sent")
+        return 0
+
+    # Search content if requested
+    if args.search:
+        db = DatabaseManager(config.get('database', {}).get('url', 'sqlite:///event_monitoring.db'))
+        results = db.search_content(args.search)
+
+        print(f"\nSearch results for '{args.search}':\n")
+
+        for content_type, items in results.items():
+            if items:
+                print(f"\n{content_type.upper()} ({len(items)} found):")
+                print("-" * 80)
+                for item in items[:10]:  # Show first 10
+                    title = getattr(item, 'title', 'No title')
+                    url = getattr(item, 'url', None) or getattr(item, 'job_url', None) or getattr(item, 'event_url', 'No URL')
+                    firm = getattr(item, 'firm', None)
+                    firm_name = firm.name if firm else 'Unknown'
+                    print(f"  • {title}")
+                    print(f"    Firm: {firm_name}")
+                    print(f"    URL: {url}")
+                    print()
+
+        return 0
+
+    # Show storage stats if requested
+    if args.storage_stats:
+        from src.storage import ContentStorage
+        storage = ContentStorage(config.get('storage', {}).get('base_dir', 'content_storage'))
+        stats = storage.get_storage_stats()
+
+        print("\nContent Storage Statistics:\n")
+        print("-" * 60)
+
+        total_size = 0
+        total_files = 0
+
+        for content_type, type_stats in stats.items():
+            print(f"\n{content_type.upper().replace('_', ' ')}:")
+            print(f"  Files: {type_stats['count']}")
+            print(f"  Size: {type_stats['size_mb']} MB")
+            total_size += type_stats['size_mb']
+            total_files += type_stats['count']
+
+        print(f"\n{'-' * 60}")
+        print(f"TOTAL:")
+        print(f"  Files: {total_files}")
+        print(f"  Size: {total_size:.2f} MB")
+        print()
+
         return 0
 
     # Run job

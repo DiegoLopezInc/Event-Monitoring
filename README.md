@@ -1,17 +1,33 @@
 # Campus Event Monitoring System
 
-A lightweight Python-based system to monitor campus events and job postings from quantitative finance firms. The system automatically scrapes event websites, detects relevant quantitative finance content, tracks firms that host events, monitors their job portals, and sends notifications when new opportunities arise.
+A comprehensive Python-based intelligence system for tracking quantitative finance firms. Automatically monitors campus events, job postings, engineering blogs, investor reports, and video content. Extracts insights from multiple sources, stores historical data, and sends intelligent notifications about new opportunities and technical content.
 
 ## Features
 
+### Core Monitoring
 - **Event Monitoring**: Scrapes campus event websites for quantitative finance-related events
-- **Firm Detection**: Automatically identifies events hosted by major quant firms (Citadel, Two Sigma, Jane Street, etc.)
-- **Historical Tracking**: Maintains a database of all firms that have hosted events and their timing
-- **Job Portal Monitoring**: Subscribes to job portals of tracked firms
-- **Smart Filtering**: Uses keyword matching to identify relevant quantitative finance roles
-- **Notifications**: Alerts when new events or job openings are found
+- **Job Portal Monitoring**: Tracks job postings from firm career pages
+- **Blog Post Scraping**: Monitors engineering blogs for technical content and problem-solving approaches
+- **Investor Report Analysis**: Downloads and processes investor reports, fund offerings, and financial disclosures
+- **Video Transcription**: Extracts and transcribes video content from firm YouTube channels
+
+### Intelligence & Analysis
+- **Firm Detection**: Automatically identifies content from 50+ major quant firms (Citadel, Two Sigma, Jane Street, etc.)
+- **Smart Filtering**: Uses keyword matching to identify relevant quantitative finance and technical content
+- **Historical Tracking**: Maintains comprehensive database of all firm activities and content over time
+- **Content Search**: Full-text search across all content types
+- **Metrics Extraction**: Automatically extracts key financial metrics from reports
+
+### Storage & Organization
+- **Hybrid Storage**: Database for metadata + file system for full content (blog posts, reports, transcripts)
+- **Persistent Memory**: SQLite database with full historical data
+- **Organized File Structure**: Automatically organizes downloaded content by type and firm
+- **Markdown Conversion**: Converts blog posts to markdown for easy reading
+
+### Automation & Notifications
 - **Scheduled Execution**: Runs as a lightweight cron job (default: 8 PM daily)
-- **Persistent Storage**: SQLite database for maintaining historical data
+- **Multi-Channel Notifications**: Email and console alerts for new content
+- **Batch Processing**: Efficiently processes multiple sources in a single run
 - **Comprehensive Testing**: Full test suite included
 
 ## Example Use Case

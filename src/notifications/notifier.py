@@ -28,17 +28,23 @@ class Notifier:
         self.email_enabled = config.get('email', {}).get('enabled', False)
 
     def notify_new_items(self) -> dict:
-        """Check for and notify about new events and jobs
+        """Check for and notify about new events, jobs, blog posts, reports, and videos
 
         Returns:
             dict: Summary of notifications sent
         """
         events = self.db.get_unnotified_events()
         jobs = self.db.get_unnotified_jobs()
+        blog_posts = self.db.get_unnotified_blog_posts()
+        reports = self.db.get_unnotified_reports()
+        videos = self.db.get_unnotified_videos()
 
         summary = {
             'events_notified': 0,
             'jobs_notified': 0,
+            'blog_posts_notified': 0,
+            'reports_notified': 0,
+            'videos_notified': 0,
             'total_notifications': 0
         }
 
@@ -50,7 +56,21 @@ class Notifier:
             self._notify_jobs(jobs)
             summary['jobs_notified'] = len(jobs)
 
-        summary['total_notifications'] = summary['events_notified'] + summary['jobs_notified']
+        if blog_posts:
+            self._notify_blog_posts(blog_posts)
+            summary['blog_posts_notified'] = len(blog_posts)
+
+        if reports:
+            self._notify_reports(reports)
+            summary['reports_notified'] = len(reports)
+
+        if videos:
+            self._notify_videos(videos)
+            summary['videos_notified'] = len(videos)
+
+        summary['total_notifications'] = (summary['events_notified'] + summary['jobs_notified'] +
+                                          summary['blog_posts_notified'] + summary['reports_notified'] +
+                                          summary['videos_notified'])
 
         return summary
 
@@ -227,6 +247,187 @@ class Notifier:
 
         except Exception as e:
             logger.error(f"Failed to send email: {e}")
+
+    def _notify_blog_posts(self, blog_posts: List):
+        """Send notifications for new blog posts
+
+        Args:
+            blog_posts: List of blog posts to notify about
+        """
+        logger.info(f"Notifying about {len(blog_posts)} new blog posts")
+
+        message = self._format_blog_posts_message(blog_posts)
+
+        if self.email_enabled:
+            self._send_email(
+                subject=f"📝 {len(blog_posts)} New Tech Blog Post(s) - Quant Firms",
+                body=message
+            )
+        else:
+            print("\n" + "="*80)
+            print("NEW BLOG POSTS NOTIFICATION")
+            print("="*80)
+            print(message)
+            print("="*80 + "\n")
+
+        for post in blog_posts:
+            self.db.mark_blog_post_notified(post.id)
+
+    def _notify_reports(self, reports: List):
+        """Send notifications for new investor reports
+
+        Args:
+            reports: List of reports to notify about
+        """
+        logger.info(f"Notifying about {len(reports)} new reports")
+
+        message = self._format_reports_message(reports)
+
+        if self.email_enabled:
+            self._send_email(
+                subject=f"📊 {len(reports)} New Investor Report(s) - Quant Firms",
+                body=message
+            )
+        else:
+            print("\n" + "="*80)
+            print("NEW INVESTOR REPORTS NOTIFICATION")
+            print("="*80)
+            print(message)
+            print("="*80 + "\n")
+
+        for report in reports:
+            self.db.mark_report_notified(report.id)
+
+    def _notify_videos(self, videos: List):
+        """Send notifications for new video content
+
+        Args:
+            videos: List of videos to notify about
+        """
+        logger.info(f"Notifying about {len(videos)} new videos")
+
+        message = self._format_videos_message(videos)
+
+        if self.email_enabled:
+            self._send_email(
+                subject=f"🎥 {len(videos)} New Video(s) - Quant Firms",
+                body=message
+            )
+        else:
+            print("\n" + "="*80)
+            print("NEW VIDEO CONTENT NOTIFICATION")
+            print("="*80)
+            print(message)
+            print("="*80 + "\n")
+
+        for video in videos:
+            self.db.mark_video_notified(video.id)
+
+    def _format_blog_posts_message(self, blog_posts: List) -> str:
+        """Format blog posts into a notification message
+
+        Args:
+            blog_posts: List of blog posts
+
+        Returns:
+            str: Formatted message
+        """
+        lines = [
+            f"Found {len(blog_posts)} new blog post(s) about engineering and technology:\n"
+        ]
+
+        for i, post in enumerate(blog_posts, 1):
+            lines.append(f"\n{i}. {post.title}")
+            lines.append(f"   Firm: {post.firm.name}")
+
+            if post.author:
+                lines.append(f"   Author: {post.author}")
+
+            if post.published_date:
+                lines.append(f"   Published: {post.published_date.strftime('%Y-%m-%d')}")
+
+            if post.tags:
+                lines.append(f"   Tags: {post.tags}")
+
+            if post.summary:
+                summary = post.summary[:200] + "..." if len(post.summary) > 200 else post.summary
+                lines.append(f"   Summary: {summary}")
+
+            lines.append(f"   URL: {post.url}")
+
+        return "\n".join(lines)
+
+    def _format_reports_message(self, reports: List) -> str:
+        """Format reports into a notification message
+
+        Args:
+            reports: List of reports
+
+        Returns:
+            str: Formatted message
+        """
+        lines = [
+            f"Found {len(reports)} new investor report(s):\n"
+        ]
+
+        for i, report in enumerate(reports, 1):
+            lines.append(f"\n{i}. {report.title}")
+            lines.append(f"   Firm: {report.firm.name}")
+
+            if report.report_type:
+                lines.append(f"   Type: {report.report_type}")
+
+            if report.report_date:
+                lines.append(f"   Date: {report.report_date.strftime('%Y-%m-%d')}")
+
+            if report.summary:
+                summary = report.summary[:200] + "..." if len(report.summary) > 200 else report.summary
+                lines.append(f"   Summary: {summary}")
+
+            if report.key_metrics:
+                lines.append(f"   Key Metrics: {report.key_metrics}")
+
+            lines.append(f"   URL: {report.url}")
+
+        return "\n".join(lines)
+
+    def _format_videos_message(self, videos: List) -> str:
+        """Format videos into a notification message
+
+        Args:
+            videos: List of videos
+
+        Returns:
+            str: Formatted message
+        """
+        lines = [
+            f"Found {len(videos)} new video(s) with transcripts:\n"
+        ]
+
+        for i, video in enumerate(videos, 1):
+            lines.append(f"\n{i}. {video.title}")
+            lines.append(f"   Firm: {video.firm.name}")
+
+            if video.published_date:
+                lines.append(f"   Published: {video.published_date.strftime('%Y-%m-%d')}")
+
+            if video.duration:
+                minutes = video.duration // 60
+                lines.append(f"   Duration: {minutes} minutes")
+
+            if video.topics:
+                lines.append(f"   Topics: {video.topics}")
+
+            if video.speakers:
+                lines.append(f"   Speakers: {video.speakers}")
+
+            if video.summary:
+                summary = video.summary[:200] + "..." if len(video.summary) > 200 else video.summary
+                lines.append(f"   Summary: {summary}")
+
+            lines.append(f"   URL: {video.url}")
+
+        return "\n".join(lines)
 
     def send_test_notification(self):
         """Send a test notification to verify configuration"""

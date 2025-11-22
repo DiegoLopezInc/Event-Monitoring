@@ -37,6 +37,9 @@ ENV/
 *.sqlite
 *.sqlite3
 
+# Content storage
+content_storage/
+
 # Configuration
 config.yaml
 .env
