@@ -1,0 +1,41 @@
+# Campus Event Monitoring Configuration
+
+# Database configuration
+database:
+  url: sqlite:///event_monitoring.db  # Use SQLite for lightweight deployment
+  # For PostgreSQL: postgresql://user:password@localhost/dbname
+
+# Scheduler configuration
+scheduler:
+  time: "20:00"  # Daily run time (8:00 PM)
+  run_on_start: false  # Set to true to run immediately on startup
+
+# Job monitoring settings
+job_monitoring:
+  scrape_known_firms: true  # Scrape predefined list of quant firms
+  scrape_event_firms: true  # Scrape firms that have hosted events
+
+# Email notification settings
+email:
+  enabled: false  # Set to true to enable email notifications
+  smtp_server: smtp.gmail.com
+  smtp_port: 587
+  sender_email: your-email@gmail.com
+  sender_password: your-app-password  # For Gmail, use App Password
+  recipient_email: recipient@example.com
+
+# Additional event sources (beyond defaults)
+event_sources:
+  - name: My University Events
+    url: https://example.edu/events
+    rss: null  # Optional RSS feed URL
+
+  # Add more sources as needed
+  # - name: Another Source
+  #   url: https://another.edu/events
+  #   rss: https://another.edu/events.rss
+
+# Logging configuration
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: event_monitoring.log
