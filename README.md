@@ -249,13 +249,17 @@ sudo systemctl start event-monitoring
 
 ## Supported Firms
 
-The system tracks 50+ quantitative finance firms including:
+The system tracks 70+ quantitative finance firms including:
 
 **Hedge Funds**: Citadel, Two Sigma, Renaissance Technologies, DE Shaw, AQR
 
 **Prop Trading**: Jane Street, Jump Trading, Optiver, IMC Trading, DRW, SIG
 
 **HFT**: Hudson River Trading, Tower Research, Virtu Financial, Old Mission
+
+**Market Makers**: Citadel Securities, Virtu Financial, Flow Traders, XTX Markets
+
+**Crypto/Digital Assets**: XTX Markets, Jump Crypto, Wintermute, GSR, Galaxy Digital, Paradigm, FalconX, B2C2, Coinbase, Kraken
 
 **Investment Banks**: Goldman Sachs, Morgan Stanley, JP Morgan (quant divisions)
 

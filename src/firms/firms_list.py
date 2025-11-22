@@ -27,10 +27,17 @@ QUANT_FIRMS = [
 
     # Market Makers
     "Citadel Securities", "Virtu Financial", "Flow Traders",
-    "GTS", "Global Trading Systems",
+    "GTS", "Global Trading Systems", "XTX Markets",
 
-    # Crypto/Blockchain Quant
-    "Wintermute", "Alameda Research", "Jump Crypto", "Cumberland",
+    # Crypto/Blockchain Quant & Market Makers
+    "Jump Crypto", "Cumberland", "Wintermute", "GSR",
+    "Galaxy Digital", "Paradigm", "Framework Ventures",
+    "FalconX", "B2C2", "Amber Group", "QCP Capital",
+    "Kronos Research", "Folkvang", "CMS Holdings",
+    "Alameda Research",  # Historical (defunct 2022)
+
+    # Crypto Exchanges with Quant/Trading Teams
+    "Coinbase", "Kraken", "Gemini", "Binance US",
 
     # Fintech with Quant Focus
     "Robinhood", "Bloomberg", "FactSet", "Refinitiv",
@@ -52,6 +59,8 @@ QUANT_KEYWORDS = [
     "equity", "options", "futures", "commodities",
     "forex", "rates", "credit", "volatility",
     "arbitrage", "alpha", "factor models",
+    "crypto", "cryptocurrency", "blockchain", "defi",
+    "digital assets", "market making",
 
     # Academic
     "financial engineering", "computational finance",
@@ -120,6 +129,20 @@ FIRM_CAREERS_URLS = {
     "AQR Capital": "https://careers.aqr.com/",
     "Millennium": "https://www.mlp.com/careers/",
     "Point72": "https://careers.point72.com/",
+
+    # Crypto/Digital Asset Firms
+    "XTX Markets": "https://www.xtxmarkets.com/careers/",
+    "Jump Crypto": "https://jumpcrypto.com/careers/",
+    "Cumberland": "https://cumberland.io/careers/",
+    "Wintermute": "https://www.wintermute.com/careers",
+    "GSR": "https://www.gsr.io/careers/",
+    "Galaxy Digital": "https://www.galaxydigital.io/careers/",
+    "Paradigm": "https://www.paradigm.xyz/opportunities",
+    "FalconX": "https://www.falconx.io/careers",
+    "B2C2": "https://www.b2c2.com/careers",
+    "Coinbase": "https://www.coinbase.com/careers",
+    "Kraken": "https://www.kraken.com/careers",
+    "Gemini": "https://www.gemini.com/careers",
 }
 
 # Engineering blogs and tech content
@@ -142,6 +165,15 @@ FIRM_BLOG_URLS = {
     "Goldman Sachs": "https://www.goldmansachs.com/insights/",
     "Morgan Stanley": "https://www.morganstanley.com/ideas/",
     "JP Morgan": "https://www.jpmorgan.com/insights",
+
+    # Crypto/Digital Asset Firms
+    "XTX Markets": "https://www.xtxmarkets.com/insights",
+    "Jump Crypto": "https://jumpcrypto.com/writing/",
+    "Paradigm": "https://www.paradigm.xyz/writing",
+    "Galaxy Digital": "https://www.galaxy.com/insights/",
+    "Coinbase": "https://www.coinbase.com/blog",
+    "Kraken": "https://blog.kraken.com/",
+    "FalconX": "https://www.falconx.io/insights",
 }
 
 # Investor relations and reports
@@ -156,6 +188,10 @@ FIRM_INVESTOR_URLS = {
     "Morgan Stanley": "https://www.morganstanley.com/about-us-ir",
     "JP Morgan": "https://www.jpmorganchase.com/ir/investor-relations",
     "BlackRock": "https://ir.blackrock.com/",
+
+    # Crypto/Digital Asset Firms
+    "Galaxy Digital": "https://investor.galaxydigital.io/",
+    "Coinbase": "https://investor.coinbase.com/",
 }
 
 # YouTube channels and video content
@@ -168,4 +204,9 @@ FIRM_YOUTUBE_CHANNELS = {
     "Morgan Stanley": "UCzjNRcGmWqf0xDDJEJDnRjg",  # Morgan Stanley
     "JP Morgan": "UCe3v8hXGwVd1eMDmvFr2G7w",  # JPMorgan Chase & Co.
     "BlackRock": "UCp_SdNPEZmBEcrwEh1W2OXg",  # BlackRock
+
+    # Crypto/Digital Asset Firms
+    "Coinbase": "UCd1KHfthXPRlmVMFXG8jhmA",  # Coinbase
+    "Galaxy Digital": "UCjvhJObOwSKZ8qYx5iQOahw",  # Galaxy Digital
+    "Paradigm": "UCLVz6W-fFL_vPZvNdMqMqaw",  # Paradigm (if available)
 }
